@@ -16,7 +16,6 @@
 @property (nonatomic, strong) NSURLSession *URLSession;
 @property (nonatomic, strong) NSMutableURLRequest *URLRequest;
 
-@property (nonatomic, strong) NSDictionary *defaultPayload;
 @property (nonatomic, strong) NSDate *startDate;
 
 - (void)beginSession;
@@ -140,10 +139,22 @@
 
 - (NSString *)JSONStringFromDictionary:(NSDictionary *)dictionary
 {
-    NSData *postData = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:nil];
-    NSString *postString = [[NSString alloc] initWithData:postData encoding:NSUTF8StringEncoding];
+    NSMutableString *mutableString = [[NSMutableString alloc] init];
+    for (id key in [dictionary allKeys])
+    {
+        NSString *keyValue = [[key stringValue] stringByAppendingString:[dictionary[key] stringValue]];
+        
+        if (!mutableString.length)
+        {
+            [mutableString appendString:keyValue];
+        }
+        else
+        {
+            [mutableString appendFormat:@"&%@", keyValue];
+        }
+    }
     
-    return postString;
+    return [mutableString copy];
 }
 
 - (NSString *)stringByURLEscapingString:(NSString *)string
