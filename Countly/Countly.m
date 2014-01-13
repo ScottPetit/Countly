@@ -142,7 +142,7 @@
     NSMutableString *mutableString = [[NSMutableString alloc] init];
     for (id key in [dictionary allKeys])
     {
-        NSString *keyValue = [[key stringValue] stringByAppendingString:[dictionary[key] stringValue]];
+        NSString *keyValue = [key stringByAppendingString:dictionary[key]];
         
         if (!mutableString.length)
         {

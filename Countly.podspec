@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name = 'Countly'
-  spec.version = '0.0.2'
+  spec.version = '0.0.3'
   spec.authors = {'Scott Petit' => 'petit.scott@gmail.com'}
   spec.homepage = 'https://github.com/ScottPetit/Countly'
   spec.summary = 'An iOS SDK for Count.ly'
