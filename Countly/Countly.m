@@ -23,6 +23,7 @@
 - (void)beginSession;
 - (void)endSession;
 
+- (NSString *)JSONStringFromObject:(id)object;
 - (NSString *)formattedStringFromDictionary:(NSDictionary *)dictionary;
 - (NSString *)stringByURLEscapingString:(NSString *)string;
 
@@ -166,11 +167,10 @@
         [eventDictionary setObject:[sum stringValue] forKey:@"sum"];
     }
     
-    NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithObject:eventDictionary forKey:@"events"];
-    NSString *parameters = [self formattedStringFromDictionary:mutableParameters];
-    parameters = [self stringByURLEscapingString:[NSString stringWithFormat:@"[%@]", parameters]];
+    NSString *JSONString = [self JSONStringFromObject:@[eventDictionary]];
+    NSString *eventString = [self stringByURLEscapingString:JSONString];
     
-    [mutableString appendFormat:@"&%@", parameters];
+    [mutableString appendFormat:@"&events=%@", eventString];
     
     [self log:[mutableString copy]];
 }
@@ -203,6 +203,42 @@
     [dataTask resume];
 }
 
+- (void)beginSession
+{
+    NSMutableString *mutableString = [NSMutableString stringWithString:[self formattedStringFromDictionary:self.defaultPayload]];
+    [mutableString appendFormat:@"&sdk_version=1.0&begin_session=1"];
+    
+    NSString *defaultMetrics = [self formattedStringFromDictionary:[self defaultMetrics]];
+    [mutableString appendString:[self stringByURLEscapingString:defaultMetrics]];
+    
+    self.startDate = [NSDate date];
+    
+    [self log:[mutableString copy]];
+}
+
+- (void)endSession
+{
+    NSMutableString *mutableString = [NSMutableString stringWithString:[self formattedStringFromDictionary:self.defaultPayload]];
+    [mutableString appendString:@"&end_session=1"];
+    
+    if (self.startDate)
+    {
+        NSTimeInterval sessionDuration = [[NSDate date] timeIntervalSinceDate:self.startDate];
+        [mutableString appendFormat:@"&session_duration=%f", sessionDuration];
+    }
+    
+    [self log:[mutableString copy]];
+}
+
+- (NSString *)JSONStringFromObject:(id)object
+{
+    NSData *data = [NSJSONSerialization dataWithJSONObject:object options:0 error:nil];
+    
+    NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    
+    return string;
+}
+
 - (NSString *)formattedStringFromDictionary:(NSDictionary *)dictionary
 {
     NSMutableString *mutableString = [[NSMutableString alloc] init];
@@ -232,33 +268,6 @@
                                             (CFStringRef)@"!*'();:@&=+$,/?%#[]",
                                             kCFStringEncodingUTF8);
 	return (__bridge NSString*)escapedString;
-}
-
-- (void)beginSession
-{
-    NSMutableString *mutableString = [NSMutableString stringWithString:[self formattedStringFromDictionary:self.defaultPayload]];
-    [mutableString appendFormat:@"&sdk_version=1.0&begin_session=1"];
-    
-    NSString *defaultMetrics = [self formattedStringFromDictionary:[self defaultMetrics]];
-    [mutableString appendString:[self stringByURLEscapingString:defaultMetrics]];
-    
-    self.startDate = [NSDate date];
-    
-    [self log:[mutableString copy]];
-}
-
-- (void)endSession
-{
-    NSMutableString *mutableString = [NSMutableString stringWithString:[self formattedStringFromDictionary:self.defaultPayload]];
-    [mutableString appendString:@"&end_session=1"];
-    
-    if (self.startDate)
-    {
-        NSTimeInterval sessionDuration = [[NSDate date] timeIntervalSinceDate:self.startDate];
-        [mutableString appendFormat:@"&session_duration=%f", sessionDuration];
-    }
-    
-    [self log:[mutableString copy]];
 }
 
 #pragma mark - NSNotificationCenter
