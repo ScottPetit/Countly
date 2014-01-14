@@ -8,6 +8,10 @@
 
 #import "Countly.h"
 @import CoreTelephony;
+#include <sys/socket.h>
+#include <sys/sysctl.h>
+#include <net/if.h>
+#include <net/if_dl.h>
 
 NSString * const kCountlyCountUserInfoKey = @"count";
 NSString * const kCountlySumUserInfoKey = @"sum";
@@ -325,9 +329,16 @@ NSString * const kCountlySegmentationUserInfoKey = @"segmentation";
 
 - (NSString *)device
 {
-    UIDevice *currentDevice = [UIDevice currentDevice];
+    char *modelKey = "hw.machine";
+    size_t size;
+    sysctlbyname(modelKey, NULL, &size, NULL, 0);
+    char *model = malloc(size);
+    sysctlbyname(modelKey, model, &size, NULL, 0);
     
-    return [currentDevice model];
+    NSString *modelString = [NSString stringWithUTF8String:model];
+    free(model);
+    
+    return modelString;
 }
 
 - (NSString *)resolution
@@ -365,7 +376,7 @@ NSString * const kCountlySegmentationUserInfoKey = @"segmentation";
     NSString *versionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     if (versionString.length == 0)
     {
-        versionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey];
+        versionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
     }
     
     return versionString;
