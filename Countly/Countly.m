@@ -336,7 +336,9 @@ NSString * const kCountlySegmentationUserInfoKey = @"segmentation";
 	CGFloat scale = [[UIScreen mainScreen] respondsToSelector:@selector(scale)] ? [[UIScreen mainScreen] scale] : 1.0f;
 	CGSize screenSize = CGSizeMake(CGRectGetWidth(screenBounds) * scale, CGRectGetHeight(screenBounds) * scale);
     
-    return NSStringFromCGSize(screenSize);
+    NSString *resolution = [NSString stringWithFormat:@"%gx%g", screenSize.width, screenSize.height];
+    
+    return resolution;
 }
 
 - (NSString *)carrier
