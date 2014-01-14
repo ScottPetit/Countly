@@ -21,7 +21,7 @@
 - (void)beginSession;
 - (void)endSession;
 
-- (NSString *)JSONStringFromDictionary:(NSDictionary *)dictionary;
+- (NSString *)formattedStringFromDictionary:(NSDictionary *)dictionary;
 - (NSString *)stringByURLEscapingString:(NSString *)string;
 
 - (void)applicationWillEnterForegroundNotification:(NSNotification *)notification;
@@ -30,6 +30,8 @@
 @end
 
 @implementation Countly
+
+@synthesize defaultPayload = _defaultPayload;
 
 #pragma mark - Init
 
@@ -89,14 +91,14 @@
         _URLRequest = [NSMutableURLRequest requestWithURL:self.baseURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
         [_URLRequest addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
         [_URLRequest addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-        [_URLRequest setHTTPMethod:@"Post"];
+        [_URLRequest setHTTPMethod:@"POST"];
     }
     return _URLRequest;
 }
 
 #pragma mark - Public
 
-- (void)startWithAppKey:(NSString *)appKey baseURL:(NSURL *)baseURL
+- (void)trackWithAppKey:(NSString *)appKey baseURL:(NSURL *)baseURL
 {
     NSParameterAssert(appKey.length);
     NSParameterAssert(baseURL);
@@ -116,8 +118,7 @@
     
     if ([payload isKindOfClass:[NSDictionary class]])
     {
-        message = [self JSONStringFromDictionary:payload];
-        message = [self stringByURLEscapingString:message];
+        message = [self formattedStringFromDictionary:payload];
     }
     else if ([payload isKindOfClass:[NSString class]])
     {
@@ -137,7 +138,7 @@
     [dataTask resume];
 }
 
-- (NSString *)JSONStringFromDictionary:(NSDictionary *)dictionary
+- (NSString *)formattedStringFromDictionary:(NSDictionary *)dictionary
 {
     NSMutableString *mutableString = [[NSMutableString alloc] init];
     for (id key in [dictionary allKeys])
@@ -172,30 +173,27 @@
 
 - (void)beginSession
 {
-    NSMutableDictionary *payload = [NSMutableDictionary dictionaryWithDictionary:self.defaultPayload];
-    
-    [payload setObject:@"1.0" forKey:@"sdk_version"];
-    [payload setObject:@"1" forKey:@"begin_session"];
-    [payload setObject:[self defaultMetrics] forKey:@"metrics"];
+    NSMutableString *mutableString = [NSMutableString stringWithString:[self formattedStringFromDictionary:self.defaultPayload]];
+    [mutableString appendFormat:@"&sdk_version=1.0&begin_session=1"];
+    [mutableString appendFormat:@"&%@", [self formattedStringFromDictionary:[self defaultMetrics]]];
     
     self.startDate = [NSDate date];
     
-    [self log:payload];
+    [self log:[mutableString copy]];
 }
 
 - (void)endSession
 {
-    NSMutableDictionary *payload = [NSMutableDictionary dictionaryWithDictionary:self.defaultPayload];
-    
-    [payload setObject:@"1" forKey:@"end_session"];
+    NSMutableString *mutableString = [NSMutableString stringWithString:[self formattedStringFromDictionary:self.defaultPayload]];
+    [mutableString appendString:@"&end_session=1"];
     
     if (self.startDate)
     {
         NSTimeInterval sessionDuration = [[NSDate date] timeIntervalSinceDate:self.startDate];
-        [payload setObject:[@(sessionDuration) stringValue] forKey:@"session_duration"];
+        [mutableString appendFormat:@"&session_duration=%f", sessionDuration];
     }
     
-    [self log:payload];
+    [self log:[mutableString copy]];
 }
 
 #pragma mark - NSNotificationCenter

@@ -10,9 +10,9 @@
 
 + (instancetype)sharedInstance;
 
-@property (nonatomic, strong) NSDictionary *defaultPayload;
+@property (nonatomic, strong, readonly) NSDictionary *defaultPayload;
 
-- (void)startWithAppKey:(NSString *)appKey baseURL:(NSURL *)baseURL;
+- (void)trackWithAppKey:(NSString *)appKey baseURL:(NSURL *)baseURL;
 - (void)log:(id)payload;
 
 @end

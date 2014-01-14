@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>9F52EAC4-659C-4BF5-A356-340D3114C73B</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Countly</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>B4B3D2ED-ECAD-47A0-A56A-0FADC239489D</key>
+		<string>https://github.com/ScottPetit/Countly.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Countly.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>B4B3D2ED-ECAD-47A0-A56A-0FADC239489D</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/ScottPetit/Countly.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>B4B3D2ED-ECAD-47A0-A56A-0FADC239489D</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>B4B3D2ED-ECAD-47A0-A56A-0FADC239489D</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Countly</string>
+		</dict>
+	</array>
+</dict>
+</plist>
