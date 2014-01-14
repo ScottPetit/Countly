@@ -19,7 +19,6 @@
 @property (nonatomic, strong) NSDate *startDate;
 
 - (void)log:(id)payload;
-- (void)log:(id)payload withParameters:(NSDictionary *)parameters;
 
 - (void)beginSession;
 - (void)endSession;
@@ -92,8 +91,8 @@
     if (!_URLRequest)
     {
         _URLRequest = [NSMutableURLRequest requestWithURL:self.baseURL cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
-        [_URLRequest addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-        [_URLRequest addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [_URLRequest addValue:@"text/html" forHTTPHeaderField:@"Content-Type"];
+        [_URLRequest addValue:@"text/html" forHTTPHeaderField:@"Accept"];
         [_URLRequest setHTTPMethod:@"POST"];
     }
     return _URLRequest;
@@ -144,7 +143,7 @@
         return;
     }
     
-    NSString *string = [self formattedStringFromDictionary:self.defaultPayload];
+    NSMutableString *mutableString = [[self formattedStringFromDictionary:self.defaultPayload] mutableCopy];
     
     NSMutableDictionary *eventDictionary = [NSMutableDictionary dictionaryWithObject:event forKey:@"key"];
     
@@ -168,18 +167,17 @@
     }
     
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithObject:eventDictionary forKey:@"events"];
+    NSString *parameters = [self formattedStringFromDictionary:mutableParameters];
+    parameters = [self stringByURLEscapingString:parameters];
     
-    [self log:string withParameters:mutableParameters];
+    [mutableString appendFormat:@"&%@", parameters];
+    
+    [self log:[mutableString copy]];
 }
 
 #pragma mark - Private
 
 - (void)log:(id)payload
-{
-    [self log:payload withParameters:nil];
-}
-
-- (void)log:(id)payload withParameters:(NSDictionary *)parameters
 {
     NSString *message = nil;
     
@@ -197,11 +195,8 @@
         return;
     }
     
-    NSDictionary *URLParameters = parameters ? : [NSDictionary dictionary];
-    
     NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"/i?%@", message] relativeToURL:self.baseURL];
     [self.URLRequest setURL:URL];
-    [self.URLRequest setHTTPBody:[NSJSONSerialization dataWithJSONObject:URLParameters options:0 error:nil]];
     
     NSURLSessionDataTask *dataTask = [self.URLSession dataTaskWithRequest:self.URLRequest completionHandler:nil];
     
