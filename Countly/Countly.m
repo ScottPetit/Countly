@@ -235,7 +235,7 @@ NSString * const kCountlySegmentationUserInfoKey = @"segmentation";
     NSMutableString *mutableString = [NSMutableString stringWithString:[self formattedStringFromDictionary:self.defaultPayload]];
     [mutableString appendFormat:@"&sdk_version=1.0&begin_session=1"];
     
-    NSString *defaultMetrics = [self formattedStringFromDictionary:[self defaultMetrics]];
+    NSString *defaultMetrics = [self JSONStringFromObject:[self defaultMetrics]];
     [mutableString appendFormat:@"&metrics=%@", [self stringByURLEscapingString:defaultMetrics]];
     
     self.startDate = [NSDate date];
