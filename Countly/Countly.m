@@ -119,25 +119,25 @@
 
 - (void)trackEvent:(NSString *)event
 {
-    [self trackEvent:event withCount:nil];
+    [self trackEvent:event withCount:0];
 }
 
-- (void)trackEvent:(NSString *)event withCount:(NSNumber *)count
+- (void)trackEvent:(NSString *)event withCount:(NSInteger)count
 {
-    [self trackEvent:event withCount:count sum:nil];
+    [self trackEvent:event withCount:count sum:0.0f];
 }
 
-- (void)trackEvent:(NSString *)event withCount:(NSNumber *)count sum:(NSNumber *)sum
+- (void)trackEvent:(NSString *)event withCount:(NSInteger)count sum:(CGFloat)sum
 {
     [self trackEvent:event withCount:count segmentation:nil sum:sum];
 }
 
-- (void)trackEvent:(NSString *)event withCount:(NSNumber *)count segmentation:(NSDictionary *)segmentation
+- (void)trackEvent:(NSString *)event withCount:(NSInteger)count segmentation:(NSDictionary *)segmentation
 {
-    [self trackEvent:event withCount:count segmentation:segmentation sum:nil];
+    [self trackEvent:event withCount:count segmentation:segmentation sum:0.0F];
 }
 
-- (void)trackEvent:(NSString *)event withCount:(NSNumber *)count segmentation:(NSDictionary *)segmentation sum:(NSNumber *)sum
+- (void)trackEvent:(NSString *)event withCount:(NSInteger)count segmentation:(NSDictionary *)segmentation sum:(CGFloat)sum
 {
     if (!event.length)
     {
@@ -150,11 +150,11 @@
     
     if (count)
     {
-        [eventDictionary setObject:[count stringValue] forKey:@"count"];
+        [eventDictionary setObject:@(count) forKey:@"count"];
     }
     else
     {
-        [eventDictionary setObject:@"1" forKey:@"count"];
+        [eventDictionary setObject:@1 forKey:@"count"];
     }
     
     if (segmentation)
@@ -164,7 +164,7 @@
     
     if (sum)
     {
-        [eventDictionary setObject:[sum stringValue] forKey:@"sum"];
+        [eventDictionary setObject:@(sum) forKey:@"sum"];
     }
     
     NSString *JSONString = [self JSONStringFromObject:@[eventDictionary]];

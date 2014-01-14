@@ -16,10 +16,10 @@
 
 //Event Tracking
 - (void)trackEvent:(NSString *)event;
-- (void)trackEvent:(NSString *)event withCount:(NSNumber *)count;
-- (void)trackEvent:(NSString *)event withCount:(NSNumber *)count sum:(NSNumber *)sum;
-- (void)trackEvent:(NSString *)event withCount:(NSNumber *)count segmentation:(NSDictionary *)segmentation;
-- (void)trackEvent:(NSString *)event withCount:(NSNumber *)count segmentation:(NSDictionary *)segmentation sum:(NSNumber *)sum;
+- (void)trackEvent:(NSString *)event withCount:(NSInteger)count;
+- (void)trackEvent:(NSString *)event withCount:(NSInteger)count sum:(CGFloat)sum;
+- (void)trackEvent:(NSString *)event withCount:(NSInteger)count segmentation:(NSDictionary *)segmentation;
+- (void)trackEvent:(NSString *)event withCount:(NSInteger)count segmentation:(NSDictionary *)segmentation sum:(CGFloat)sum;
 
 @end
 
