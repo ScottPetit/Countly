@@ -18,6 +18,9 @@
 
 @property (nonatomic, strong) NSDate *startDate;
 
+- (void)log:(id)payload;
+- (void)log:(id)payload withParameters:(NSDictionary *)parameters;
+
 - (void)beginSession;
 - (void)endSession;
 
@@ -110,9 +113,73 @@
     
     self.appKey = appKey;
     self.baseURL = baseURL;
+    
+    [self beginSession];
 }
 
+- (void)trackEvent:(NSString *)event
+{
+    [self trackEvent:event withCount:nil];
+}
+
+- (void)trackEvent:(NSString *)event withCount:(NSNumber *)count
+{
+    [self trackEvent:event withCount:count sum:nil];
+}
+
+- (void)trackEvent:(NSString *)event withCount:(NSNumber *)count sum:(NSNumber *)sum
+{
+    [self trackEvent:event withCount:count segmentation:nil sum:sum];
+}
+
+- (void)trackEvent:(NSString *)event withCount:(NSNumber *)count segmentation:(NSDictionary *)segmentation
+{
+    [self trackEvent:event withCount:count segmentation:segmentation sum:nil];
+}
+
+- (void)trackEvent:(NSString *)event withCount:(NSNumber *)count segmentation:(NSDictionary *)segmentation sum:(NSNumber *)sum
+{
+    if (!event.length)
+    {
+        return;
+    }
+    
+    NSString *string = [self formattedStringFromDictionary:self.defaultPayload];
+    
+    NSMutableDictionary *eventDictionary = [NSMutableDictionary dictionaryWithObject:event forKey:@"key"];
+    
+    if (count)
+    {
+        [eventDictionary setObject:[count stringValue] forKey:@"count"];
+    }
+    else
+    {
+        [eventDictionary setObject:@"1" forKey:@"count"];
+    }
+    
+    if (segmentation)
+    {
+        [eventDictionary setObject:segmentation forKey:@"segmentation"];
+    }
+    
+    if (sum)
+    {
+        [eventDictionary setObject:[sum stringValue] forKey:@"sum"];
+    }
+    
+    NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithObject:eventDictionary forKey:@"events"];
+    
+    [self log:string withParameters:mutableParameters];
+}
+
+#pragma mark - Private
+
 - (void)log:(id)payload
+{
+    [self log:payload withParameters:nil];
+}
+
+- (void)log:(id)payload withParameters:(NSDictionary *)parameters
 {
     NSString *message = nil;
     
@@ -130,11 +197,14 @@
         return;
     }
     
+    NSDictionary *URLParameters = parameters ? : [NSDictionary dictionary];
+    
     NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"/i?%@", message] relativeToURL:self.baseURL];
     [self.URLRequest setURL:URL];
+    [self.URLRequest setHTTPBody:[NSJSONSerialization dataWithJSONObject:URLParameters options:0 error:nil]];
     
     NSURLSessionDataTask *dataTask = [self.URLSession dataTaskWithRequest:self.URLRequest completionHandler:nil];
-
+    
     [dataTask resume];
 }
 
@@ -169,13 +239,13 @@
 	return (__bridge NSString*)escapedString;
 }
 
-#pragma mark - Private
-
 - (void)beginSession
 {
     NSMutableString *mutableString = [NSMutableString stringWithString:[self formattedStringFromDictionary:self.defaultPayload]];
     [mutableString appendFormat:@"&sdk_version=1.0&begin_session=1"];
-    [mutableString appendFormat:@"&%@", [self formattedStringFromDictionary:[self defaultMetrics]]];
+    
+    NSString *defaultMetrics = [self formattedStringFromDictionary:[self defaultMetrics]];
+    [mutableString appendString:[self stringByURLEscapingString:defaultMetrics]];
     
     self.startDate = [NSDate date];
     

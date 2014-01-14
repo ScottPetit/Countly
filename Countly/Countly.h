@@ -13,7 +13,13 @@
 @property (nonatomic, strong, readonly) NSDictionary *defaultPayload;
 
 - (void)trackWithAppKey:(NSString *)appKey baseURL:(NSURL *)baseURL;
-- (void)log:(id)payload;
+
+//Event Tracking
+- (void)trackEvent:(NSString *)event;
+- (void)trackEvent:(NSString *)event withCount:(NSNumber *)count;
+- (void)trackEvent:(NSString *)event withCount:(NSNumber *)count sum:(NSNumber *)sum;
+- (void)trackEvent:(NSString *)event withCount:(NSNumber *)count segmentation:(NSDictionary *)segmentation;
+- (void)trackEvent:(NSString *)event withCount:(NSNumber *)count segmentation:(NSDictionary *)segmentation sum:(NSNumber *)sum;
 
 @end
 
