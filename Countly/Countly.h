@@ -34,7 +34,7 @@ extern NSString * const kCountlySegmentationUserInfoKey;
 - (NSString *)operatingSystem;
 - (NSString *)operatingSystemVersion;
 - (NSString *)device;
-- (NSNumber *)resolution;
+- (NSString *)resolution;
 - (NSString *)carrier;
 - (NSString *)locale;
 - (NSString *)applicationVersion;
