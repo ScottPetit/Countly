@@ -130,7 +130,7 @@
         return;
     }
     
-    NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"1/?%@", message] relativeToURL:self.baseURL];
+    NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"/i?%@", message] relativeToURL:self.baseURL];
     [self.URLRequest setURL:URL];
     
     NSURLSessionDataTask *dataTask = [self.URLSession dataTaskWithRequest:self.URLRequest completionHandler:nil];
