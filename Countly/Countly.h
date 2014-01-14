@@ -6,6 +6,10 @@
 //  Copyright (c) 2014 Scott Petit. All rights reserved.
 //
 
+extern NSString * const kCountlyCountUserInfoKey;
+extern NSString * const kCountlySumUserInfoKey;
+extern NSString * const kCountlySegmentationUserInfoKey;
+
 @interface Countly : NSObject
 
 + (instancetype)sharedInstance;

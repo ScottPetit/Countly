@@ -9,6 +9,10 @@
 #import "Countly.h"
 @import CoreTelephony;
 
+NSString * const kCountlyCountUserInfoKey = @"count";
+NSString * const kCountlySumUserInfoKey = @"sum";
+NSString * const kCountlySegmentationUserInfoKey = @"segmentation";
+
 @interface Countly ()
 
 @property (nonatomic, copy) NSString *appKey;
@@ -180,7 +184,21 @@
     __weak typeof(self)weakSelf = self;
     [[NSNotificationCenter defaultCenter] addObserverForName:notificationName object:nil queue:nil usingBlock:^(NSNotification *note) {
         __strong typeof(self)strongSelf = weakSelf;
-        [strongSelf trackEvent:note.name];
+        
+        NSInteger count = 0;
+        CGFloat sum = 0.0f;
+        NSDictionary *segmentation = nil;
+        
+        NSDictionary *userInfo = note.userInfo;
+        if (userInfo)
+        {
+            count = [userInfo[kCountlyCountUserInfoKey] integerValue];
+            sum = [userInfo[kCountlySumUserInfoKey] floatValue];
+            segmentation = userInfo[kCountlySegmentationUserInfoKey];
+        }
+        
+        
+        [strongSelf trackEvent:note.name withCount:count segmentation:segmentation sum:sum];
     }];
 }
 
@@ -218,7 +236,7 @@
     [mutableString appendFormat:@"&sdk_version=1.0&begin_session=1"];
     
     NSString *defaultMetrics = [self formattedStringFromDictionary:[self defaultMetrics]];
-    [mutableString appendString:[self stringByURLEscapingString:defaultMetrics]];
+    [mutableString appendFormat:@"&metrics=%@", [self stringByURLEscapingString:defaultMetrics]];
     
     self.startDate = [NSDate date];
     
