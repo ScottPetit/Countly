@@ -175,6 +175,15 @@
     [self log:[mutableString copy]];
 }
 
+- (void)trackEventWithNotificationName:(NSString *)notificationName
+{
+    __weak typeof(self)weakSelf = self;
+    [[NSNotificationCenter defaultCenter] addObserverForName:notificationName object:nil queue:nil usingBlock:^(NSNotification *note) {
+        __strong typeof(self)strongSelf = weakSelf;
+        [strongSelf trackEvent:note.name];
+    }];
+}
+
 #pragma mark - Private
 
 - (void)log:(id)payload

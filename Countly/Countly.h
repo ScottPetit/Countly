@@ -21,6 +21,8 @@
 - (void)trackEvent:(NSString *)event withCount:(NSInteger)count segmentation:(NSDictionary *)segmentation;
 - (void)trackEvent:(NSString *)event withCount:(NSInteger)count segmentation:(NSDictionary *)segmentation sum:(CGFloat)sum;
 
+- (void)trackEventWithNotificationName:(NSString *)notificationName;
+
 @end
 
 @interface Countly (Metrics)
