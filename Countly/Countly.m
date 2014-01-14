@@ -330,11 +330,11 @@ NSString * const kCountlySegmentationUserInfoKey = @"segmentation";
     return [currentDevice model];
 }
 
-- (NSString *)resolution
+- (NSNumber *)resolution
 {
     CGFloat resolution = [[UIScreen mainScreen] scale];
     
-    return [@(resolution) stringValue];
+    return @(resolution);
 }
 
 - (NSString *)carrier
