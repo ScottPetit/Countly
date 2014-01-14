@@ -168,7 +168,7 @@
     
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithObject:eventDictionary forKey:@"events"];
     NSString *parameters = [self formattedStringFromDictionary:mutableParameters];
-    parameters = [self stringByURLEscapingString:parameters];
+    parameters = [self stringByURLEscapingString:[NSString stringWithFormat:@"[%@]", parameters]];
     
     [mutableString appendFormat:@"&%@", parameters];
     
