@@ -393,6 +393,12 @@ NSString * const kCountlySegmentationUserInfoKey = @"segmentation";
     [metrics setObject:[self locale] forKey:@"_locale"];
     [metrics setObject:[self applicationVersion] forKey:@"_app_version"];
     
+    NSString *carrier = [self carrier];
+    if ([carrier length])
+    {
+        [metrics setObject:carrier forKey:@"_carrier"];
+    }
+    
     return [metrics copy];
 }
 
