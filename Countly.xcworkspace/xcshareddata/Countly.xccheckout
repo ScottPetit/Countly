@@ -5,19 +5,19 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>108C56F5-ABB0-4F0E-989D-370C40130FCA</string>
+	<string>33B2CC48-5B73-4675-AA2B-E20D5CDB27EC</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Countly</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>E04DC1FE-C23D-46B4-9F3C-2EF0CC806D83</key>
+		<key>B4B3D2ED-ECAD-47A0-A56A-0FADC239489D</key>
 		<string>https://github.com/ScottPetit/Countly.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Countly.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>E04DC1FE-C23D-46B4-9F3C-2EF0CC806D83</key>
+		<key>B4B3D2ED-ECAD-47A0-A56A-0FADC239489D</key>
 		<string>..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
@@ -25,14 +25,14 @@
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>E04DC1FE-C23D-46B4-9F3C-2EF0CC806D83</string>
+	<string>B4B3D2ED-ECAD-47A0-A56A-0FADC239489D</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>E04DC1FE-C23D-46B4-9F3C-2EF0CC806D83</string>
+			<string>B4B3D2ED-ECAD-47A0-A56A-0FADC239489D</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Countly</string>
 		</dict>

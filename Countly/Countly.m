@@ -219,7 +219,7 @@ NSString * const kCountlySegmentationUserInfoKey = @"segmentation";
     }
     else
     {
-        NSLog(@"Attempting to log unsupported payload, this could throw an exception but currently just returns");
+        NSLog(@"Attempting to log unsupported payload %@, this could throw an exception but currently just returns", payload);
         return;
     }
     
