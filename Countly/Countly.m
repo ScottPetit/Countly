@@ -180,7 +180,8 @@ NSString * const kCountlySegmentationUserInfoKey = @"segmentation";
     
     [mutableString appendFormat:@"&events=%@", eventString];
     
-    [self log:[mutableString copy]];
+    NSString *string = [mutableString copy];
+    [self log:string];
 }
 
 - (void)trackEventWithNotificationName:(NSString *)notificationName
@@ -292,13 +293,14 @@ NSString * const kCountlySegmentationUserInfoKey = @"segmentation";
 
 - (NSString *)stringByURLEscapingString:(NSString *)string
 {
-    CFStringRef escapedString =
-    CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+    CFStringRef escapedStringRef = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
                                             (CFStringRef)string,
                                             NULL,
                                             (CFStringRef)@"!*'();:@&=+$,/?%#[]",
                                             kCFStringEncodingUTF8);
-	return (__bridge NSString*)escapedString;
+    
+    NSString *escapedString = (__bridge_transfer NSString *)escapedStringRef;
+	return escapedString;
 }
 
 #pragma mark - NSNotificationCenter
