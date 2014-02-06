@@ -26,8 +26,6 @@ NSString * const kCountlySegmentationUserInfoKey = @"segmentation";
 
 @property (nonatomic, strong) NSDate *startDate;
 
-- (void)log:(id)payload;
-
 - (void)beginSession;
 - (void)endSession;
 
@@ -207,8 +205,6 @@ NSString * const kCountlySegmentationUserInfoKey = @"segmentation";
     }];
 }
 
-#pragma mark - Private
-
 - (void)log:(id)payload
 {
     NSString *message = nil;
@@ -234,6 +230,8 @@ NSString * const kCountlySegmentationUserInfoKey = @"segmentation";
     
     [dataTask resume];
 }
+
+#pragma mark - Private
 
 - (void)beginSession
 {

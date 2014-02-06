@@ -27,6 +27,8 @@ extern NSString * const kCountlySegmentationUserInfoKey;
 
 - (void)trackEventWithNotificationName:(NSString *)notificationName;
 
+- (void)log:(id)payload;
+
 @end
 
 @interface Countly (Metrics)
